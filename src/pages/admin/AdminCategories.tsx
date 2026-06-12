@@ -138,7 +138,7 @@ export default function AdminCategories() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full min-w-[600px] text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b border-gray-100 text-gray-400 font-bold">
                       <th className="pb-3">Collection details</th>

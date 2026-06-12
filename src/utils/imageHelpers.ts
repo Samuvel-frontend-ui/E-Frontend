@@ -10,10 +10,21 @@ export const getFullImageUrl = (path?: string): string => {
   const cdnBase = (import.meta.env.VITE_CDN_URL || apiUrl).replace(/\/+$/, '');
   const normalizedPath = path.replace(/^\/+/, '');
 
-  // If the path is an absolute URL, decide whether to rewrite it or keep as‑is.
+  // If the path is an absolute URL, decide whether to rewrite it or keep as-is.
   if (path.startsWith('http://') || path.startsWith('https://')) {
     try {
       const parsed = new URL(path);
+
+      // Rewrite private R2 storage URLs to go through the backend worker
+      if (parsed.hostname.endsWith('.r2.cloudflarestorage.com')) {
+        // Extract the R2 key after the bucket name segment
+        // e.g. /ecommerce/uploads/uuid.webp → /uploads/uuid.webp
+        const segments = parsed.pathname.split('/').filter(Boolean);
+        // Drop the bucket name (first segment), keep the rest
+        const key = segments.length > 1 ? segments.slice(1).join('/') : segments.join('/');
+        return `${apiUrl}/${key}`;
+      }
+
       // Preserve URLs that already point to the CDN or the API.
       const baseHosts = new Set([
         new URL(cdnBase).hostname,
@@ -31,7 +42,7 @@ export const getFullImageUrl = (path?: string): string => {
     } catch {
       // If parsing fails, fall back to default handling below.
     }
-    // External URLs (e.g., third‑party CDN) are returned unchanged.
+    // External URLs (e.g., third-party CDN) are returned unchanged.
     return path;
   }
 

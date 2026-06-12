@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Save, Plus, Trash2, Upload } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, Upload } from 'lucide-react';
 import { apiFetch } from '../../services/api';
 import AdminLayout from '../../components/AdminLayout';
 import { getFullImageUrl } from '../../utils/imageHelpers';
@@ -41,9 +41,7 @@ export default function AdminProductForm() {
 
   // Variants builder
   const [variants, setVariants] = useState<VariantInput[]>([]);
-  const [newVarTitle, setNewVarTitle] = useState('');
-  const [newVarPrice, setNewVarPrice] = useState(0);
-  const [newVarStock, setNewVarStock] = useState(0);
+
 
   // Upload image state
   const [uploading, setUploading] = useState(false);
@@ -111,25 +109,6 @@ export default function AdminProductForm() {
     }
   };
 
-  // Add Variant Action
-  const handleAddVariant = () => {
-    if (!newVarTitle) {
-      alert('Variant title is required');
-      return;
-    }
-    setVariants([...variants, {
-      title: newVarTitle,
-      price: newVarPrice || price,
-      stock: newVarStock
-    }]);
-    setNewVarTitle('');
-    setNewVarPrice(0);
-    setNewVarStock(0);
-  };
-
-  const handleRemoveVariant = (idx: number) => {
-    setVariants(variants.filter((_, i) => i !== idx));
-  };
 
   // File upload action
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

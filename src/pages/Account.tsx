@@ -81,13 +81,11 @@ export default function Account() {
       });
       if (!res.ok) throw new Error('Upload failed');
       const data = await res.json();
-      const avatarUrl = data.user?.avatar_url || data.image?.image_path || data.url;
-      // Update avatar_url in profile
-      const updated = await apiFetch<{ user: any }>('/api/auth/profile', {
-        method: 'PUT',
-        json: { avatar_url: avatarUrl }
-      });
-      setUser(updated.user);
+      // The avatar endpoint already updates avatar_url in the DB,
+      // so just refresh the local user state from the response.
+      if (data.user) {
+        setUser(data.user);
+      }
       toast.success('Photo updated!');
     } catch (err: any) {
       toast.error(err.message || 'Avatar upload failed');

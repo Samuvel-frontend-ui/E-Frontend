@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Eye, ShoppingBag, MapPin, X } from 'lucide-react';
+import { ShoppingBag, MapPin, X } from 'lucide-react';
 import { apiFetch } from '../../services/api';
 import AdminLayout from '../../components/AdminLayout';
 
@@ -83,7 +83,7 @@ export default function AdminOrders() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+              <table className="w-full min-w-[800px] text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-gray-100 text-gray-400 font-bold">
                     <th className="pb-3">Order ID</th>
